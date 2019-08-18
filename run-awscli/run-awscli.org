@@ -5,6 +5,7 @@
 #+PROPERTY: header-args :cache yes :results scalar
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup
 #+OPTIONS: toc:t todo:nil num:nil \n:nil ^:nil
+#+EXPORT_FILE_NAME: index
 
 # # ゴール
 #   - なんか org-mode 便利そうと思ってもらえる
@@ -18,9 +19,11 @@
   - Emacs :: version 26.2
   - Org-mode :: version 9.1.9
 * 要約
-  1. [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] を使って シェルのPATHを Emacsに引き継ぎます。
+  1. AWS CLIをインストールします
 
-  2. 下記 設定を ~init.el~ に記載します。
+  2. [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] を使って シェルのPATHを Emacsに引き継ぎます
+
+  3. Emacs の ~init.el~ に下記追加します
      #+BEGIN_SRC emacs-lisp :noweb yes :tangle init.el
      ;;;; exec-path-from-shell
      <<config_path>>
@@ -29,7 +32,7 @@
      <<config_babel>>
      #+END_SRC
 
-  3. AWS CLIが実行できます。
+  4. AWS CLIが実行できます
      file:./img/orgaws-1.png
 * 前準備
 ** AWS CLI
@@ -66,32 +69,67 @@
    #+END_SRC
 
 * AWS CLI実行
-** 確認
-   ▼bashコマンドが実行できるか確認します。
-   #+BEGIN_SRC sh :exports both
-   ls
-   #+END_SRC
+  *▼bashコマンドを実行してみます*
 
-   #+RESULTS[59744ddfbeb551a770443a3ea1c54cbf62eb88f6]:
-   : how-to-execute-awscli.html
-   : img
-   : init.el
-   : run-awscli.html
-   : run-awscli.org
+  コードブロック内( =#+BEGIN_SRC ... #+END_SRC= )で /C-c C-c/ ( ~org-babel-execute-src-block~ ) を実行します。
+  コードブロック内に記載したコードが評価され、結果が =#+RESULTS= 直下に表示されます。
+  #+BEGIN_SRC org
+  ,#+BEGIN_SRC sh
+  ls
+  ,#+END_SRC
+
+  ,#+RESULTS[789f649c27406e24e1fb6689fcf186a331f138b6]:
+  : img
+  : index.html
+  : init.el
+  : run-awscli.org
+  #+END_SRC
 
    
-   ▼次に ~aws~ コマンドのパスが通っているか確認します。
-   #+BEGIN_SRC sh :exports both 
-   aws --version
+  #+BEGIN_SRC sh :exports none
+  ls
+  #+END_SRC
+
+  #+RESULTS[789f649c27406e24e1fb6689fcf186a331f138b6]:
+  : img
+  : index.html
+  : init.el
+  : run-awscli.org
+
+  
+  *▼ ~aws~ コマンドのパスが通っているか確認します*
+  #+BEGIN_SRC org
+  ,#+BEGIN_SRC sh
+  aws --version
+  ,#+END_SRC
+
+  ,#+RESULTS[94050750f89caff84a83600af87f81985908ce7e]:
+  : aws-cli/1.16.173 Python/3.7.3 Darwin/18.7.0 botocore/1.12.163
+  #+END_SRC
+
+  #+BEGIN_SRC sh :exports none
+  aws --version
+  #+END_SRC
+
+  #+RESULTS[94050750f89caff84a83600af87f81985908ce7e]:
+  : aws-cli/1.16.173 Python/3.7.3 Darwin/18.7.0 botocore/1.12.163
+
+  *▼ ~aws~ コマンドを実行してみます*
+
+   ~aws s3 ls~ でバケット一覧を表示してみます。
+
+   #+BEGIN_SRC org
+   ,#+BEGIN_SRC sh :exports both
+   aws s3 ls
+   ,#+END_SRC
+
+   ,#+RESULTS[5681767c5c45395a7ae378fac0a022d23ad41199]:
+   : 2019-08-05 16:36:39 aws-athena-query-results-xxxxx-ap-northeast-1
+   : 2019-07-08 18:43:57 cf-templates-xxxxx-ap-northeast-1
+   : 2019-05-20 10:04:01 cm-members-xxxxx
    #+END_SRC
 
-   #+RESULTS[94050750f89caff84a83600af87f81985908ce7e]:
-   : aws-cli/1.16.173 Python/3.7.3 Darwin/18.7.0 botocore/1.12.163
-
-** s3 ls コマンドの実行
-   ~aws s3 ls~ を実行し、バケット一覧の表示を確認します。
-
-   #+BEGIN_SRC sh :exports both :results scalar
+   #+BEGIN_SRC sh :exports none :results scalar
    aws s3 ls
    #+END_SRC
 
@@ -102,7 +140,7 @@
 
 ** ※MFA設定への対応
    MFAを設定している場合は少々プロセスが煩雑になります。
-   以下、  ~MFA設定有り~ かつ ~スイッチロール有り~ のケースの対応です。
+   以下、  _MFA設定有り_ かつ _スイッチロール有り_ のケースの対応です。
 *** 1. 設定ファイルの編集
     ~~/.aws/config~ ファイルを以下のように記述します。
     #+BEGIN_SRC text
@@ -116,9 +154,28 @@
     認証情報「tmp_cred.json」 を [[2. 認証情報の取得]] で生成します。
 
 *** 2. 認証情報の取得
-    ▼ ~aws sts assume-role~ で一時的な認証情報を取得します。
+    ~aws sts assume-role~ で一時的な認証情報を取得します。
     以下スクリプトを実行します。
-    #+BEGIN_SRC sh :exports code :var MFA=240030
+
+    #+BEGIN_SRC org
+    ,#+BEGIN_SRC sh :var MFA=240030
+    MFA_ARN='arn:aws:iam::xxxxx:mfa/cm-kawahara.masahiro'
+    ROLE_ARN='arn:aws:iam::yyyyy:role/cm-kawahara.masahiro'
+     
+    aws --output json \
+      sts assume-role \
+      --role-arn "$ROLE_ARN" \
+      --role-session-name ar-cred-proc \
+      --serial-number "$MFA_ARN" \
+      --token-code $MFA \
+    | jq ".Credentials + {Version: 1}" > ~/.aws/tmp_cred.json
+    ,#+END_SRC
+    #+END_SRC
+
+    今回は org buffer 上で shellを実行します。
+    上記の ~:var MFA=xxxxxx~ 部分に MFAの認証コードを記入して実行(/C-c C-c/ )します。
+    
+    #+BEGIN_SRC sh :exports none :var MFA=240030 :tangle assume-role-mfa.sh
     MFA_ARN='arn:aws:iam::xxxxx:mfa/cm-kawahara.masahiro'
     ROLE_ARN='arn:aws:iam::yyyyy:role/cm-kawahara.masahiro'
      
@@ -133,7 +190,7 @@
      
     #+RESULTS[b722705a99c6feedb4c0715f44dcdf5f6571f675]:
 
-    ▼ 「tmp_cred.json」を表示します。
+    (確認) tmp_cred.json を表示します。
     #+BEGIN_SRC sh :exports both
     cat ~/.aws/tmp_cred.json
     #+END_SRC
@@ -147,10 +204,20 @@
     :   "Version": 1
     : }
 
-*** 3. aws コマンド実行
+*** 3. ~aws~ コマンド実行
     以降、 "Expiration" に記載されている時刻まで AWSコマンドを実行できます。
-    実行する際は [[1. 設定ファイルの編集]] の profile ~mfa~ を指定します。
-    #+BEGIN_SRC sh :exports both
+    #+BEGIN_SRC org
+    ,#+BEGIN_SRC sh :exports none
+    aws --profile mfa s3 ls
+    ,#+END_SRC
+
+    ,#+RESULTS[7743dee24d959553496de2c16c5341b64714847f]:
+    : 2019-08-05 16:36:39 aws-athena-query-results-xxxxx-ap-northeast-1
+    : 2019-07-08 18:43:57 cf-templates-xxxxx-ap-northeast-1
+    : 2019-05-20 10:04:01 cm-members-xxxxx
+    #+END_SRC
+
+    #+BEGIN_SRC sh :exports none
     aws --profile mfa s3 ls
     #+END_SRC
 
@@ -159,6 +226,13 @@
     : 2019-07-08 18:43:57 cf-templates-xxxxx-ap-northeast-1
     : 2019-05-20 10:04:01 cm-members-xxxxx
 
+* さいごに
+  今回使用したOrgファイル他を下記に置いています。
+  - https://github.com/MasahiroKawahara/org-mode/tree/master/run-awscli
+    - [[https://raw.githubusercontent.com/MasahiroKawahara/org-mode/master/run-awscli/run-awscli.org][run-awscli.org(raw)]]
+
+  ▼Orgファイルの HTML export
+  https://masahirokawahara.github.io/org-mode/run-awscli/
 * 参考
   - https://orgmode.org/worg/org-contrib/babel/intro.html
   - https://tamura70.hatenadiary.org/entry/20100310/org
