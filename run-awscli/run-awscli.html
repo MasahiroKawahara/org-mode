@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-19 Mon 07:23 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Run AWS CLI in an Org buffer</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="kawahara.masahiro" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/readtheorg/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/readtheorg/js/readtheorg.js"></script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Run AWS CLI in an Org buffer</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgfea3f44">はじめに</a>
+<ul>
+<li><a href="#orga76a26c">実行環境</a></li>
+</ul>
+</li>
+<li><a href="#orgeb0de5b">要約</a></li>
+<li><a href="#orga7c575f">前準備</a>
+<ul>
+<li><a href="#org35a3ab4">AWS CLI</a></li>
+<li><a href="#orgb593140">Emacs: AWS CLI パス設定</a></li>
+<li><a href="#orge40deb3">Emacs: org-babel 設定</a></li>
+</ul>
+</li>
+<li><a href="#org99f9ef1">AWS CLI実行</a>
+<ul>
+<li><a href="#org6ce87ef">確認</a></li>
+<li><a href="#org603896f">s3 ls コマンドの実行</a></li>
+<li><a href="#org52044ad">※MFA設定への対応</a>
+<ul>
+<li><a href="#orga77dfac">1. 設定ファイルの編集</a></li>
+<li><a href="#org7e7fbcc">2. 認証情報の取得</a></li>
+<li><a href="#org79f6386">3. aws コマンド実行</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgc38a997">参考</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgfea3f44" class="outline-2">
+<h2 id="orgfea3f44">はじめに</h2>
+<div class="outline-text-2" id="text-orgfea3f44">
+<ul class="org-ul">
+<li>org-babel で AWS CLIを実行してみました。手順を記載します。</li>
+</ul>
+</div>
+<div id="outline-container-orga76a26c" class="outline-3">
+<h3 id="orga76a26c">実行環境</h3>
+<div class="outline-text-3" id="text-orga76a26c">
+<dl class="org-dl">
+<dt>OS</dt><dd>macOS Mojave, version 10.14.5</dd>
+<dt>Emacs</dt><dd>version 26.2</dd>
+<dt>Org-mode</dt><dd>version 9.1.9</dd>
+</dl>
+</div>
+</div>
+</div>
+<div id="outline-container-orgeb0de5b" class="outline-2">
+<h2 id="orgeb0de5b">要約</h2>
+<div class="outline-text-2" id="text-orgeb0de5b">
+<ol class="org-ol">
+<li><a href="https://github.com/purcell/exec-path-from-shell">exec-path-from-shell</a> を使って シェルのPATHを Emacsに引き継ぎます。</li>
+
+<li><p>
+下記 設定を <code>init.el</code> に記載します。
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #b22222;">;;;; </span><span style="color: #b22222;">exec-path-from-shell</span>
+(<span style="color: #a020f0;">when</span> (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
+
+<span style="color: #b22222;">;;;; </span><span style="color: #b22222;">org-babel</span>
+<span style="color: #b22222;">;; </span><span style="color: #b22222;">&#12467;&#12540;&#12489;&#23455;&#34892;&#26178;&#12395; confirm &#12375;&#12394;&#12356;</span>
+(<span style="color: #a020f0;">setq</span> org-confirm-babel-evaluate nil)
+
+<span style="color: #b22222;">;; </span><span style="color: #b22222;">&#23455;&#34892;&#12391;&#12365;&#12427;&#35328;&#35486;&#12434;&#25351;&#23450;</span>
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '(
+   (shell . t)
+   )
+ )
+</pre>
+</div></li>
+
+<li>AWS CLIが実行できます。
+<img src="./img/orgaws-1.png" alt="orgaws-1.png" /></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orga7c575f" class="outline-2">
+<h2 id="orga7c575f">前準備</h2>
+<div class="outline-text-2" id="text-orga7c575f">
+</div>
+<div id="outline-container-org35a3ab4" class="outline-3">
+<h3 id="org35a3ab4">AWS CLI</h3>
+<div class="outline-text-3" id="text-org35a3ab4">
+<p>
+AWS CLIを <a href="https://aws.amazon.com/jp/cli/">こちら</a> からインストールします。
+</p>
+</div>
+</div>
+<div id="outline-container-orgb593140" class="outline-3">
+<h3 id="orgb593140">Emacs: AWS CLI パス設定</h3>
+<div class="outline-text-3" id="text-orgb593140">
+<p>
+<code>aws</code> コマンドを認識させるために Emacsの PATH設定を行います。
+<a href="https://github.com/purcell/exec-path-from-shell">exec-path-from-shell</a> を使って シェルのPATHを Emacsに引き継ぎます。
+</p>
+
+<p>
+<a href="https://github.com/purcell/exec-path-from-shell#installation">Installation</a> どおりに <code>exec-path-from-shell</code> インストールを行います。
+</p>
+<blockquote>
+<p>
+Installable packages are available via MELPA: do <code>M-x package-install RET exec-path-from-shell RET</code>.
+</p>
+</blockquote>
+
+<p>
+インストール後、 <code>init.el</code> に下記設定を記載します。
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp" id="org038bd71">(<span style="color: #a020f0;">when</span> (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orge40deb3" class="outline-3">
+<h3 id="orge40deb3">Emacs: org-babel 設定</h3>
+<div class="outline-text-3" id="text-orge40deb3">
+<p>
+以下のように <code>init.el</code> に設定します。
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp" id="org859c9c9"><span style="color: #b22222;">;; </span><span style="color: #b22222;">&#12467;&#12540;&#12489;&#23455;&#34892;&#26178;&#12395; confirm &#12375;&#12394;&#12356;</span>
+(<span style="color: #a020f0;">setq</span> org-confirm-babel-evaluate nil)
+
+<span style="color: #b22222;">;; </span><span style="color: #b22222;">&#23455;&#34892;&#12391;&#12365;&#12427;&#35328;&#35486;&#12434;&#25351;&#23450;</span>
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '(
+   (shell . t)
+   )
+ )
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org99f9ef1" class="outline-2">
+<h2 id="org99f9ef1">AWS CLI実行</h2>
+<div class="outline-text-2" id="text-org99f9ef1">
+</div>
+<div id="outline-container-org6ce87ef" class="outline-3">
+<h3 id="org6ce87ef">確認</h3>
+<div class="outline-text-3" id="text-org6ce87ef">
+<p>
+▼bashコマンドが実行できるか確認します。
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">ls
+</pre>
+</div>
+
+<pre class="example">
+how-to-execute-awscli.html
+img
+init.el
+run-awscli.html
+run-awscli.org
+
+</pre>
+
+
+<p>
+▼次に <code>aws</code> コマンドのパスが通っているか確認します。
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">aws --version
+</pre>
+</div>
+
+<pre class="example">
+aws-cli/1.16.173 Python/3.7.3 Darwin/18.7.0 botocore/1.12.163
+
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org603896f" class="outline-3">
+<h3 id="org603896f">s3 ls コマンドの実行</h3>
+<div class="outline-text-3" id="text-org603896f">
+<p>
+<code>aws s3 ls</code> を実行し、バケット一覧の表示を確認します。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">aws s3 ls
+</pre>
+</div>
+
+<pre class="example">
+2019-08-05 16:36:39 aws-athena-query-results-xxxxx-ap-northeast-1
+2019-07-08 18:43:57 cf-templates-xxxxx-ap-northeast-1
+2019-05-20 10:04:01 cm-members-xxxxx
+
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org52044ad" class="outline-3">
+<h3 id="org52044ad">※MFA設定への対応</h3>
+<div class="outline-text-3" id="text-org52044ad">
+<p>
+MFAを設定している場合は少々プロセスが煩雑になります。
+以下、  <code>MFA設定有り</code> かつ <code>スイッチロール有り</code> のケースの対応です。
+</p>
+</div>
+<div id="outline-container-orga77dfac" class="outline-4">
+<h4 id="orga77dfac">1. 設定ファイルの編集</h4>
+<div class="outline-text-4" id="text-orga77dfac">
+<p>
+<code>~/.aws/config</code> ファイルを以下のように記述します。
+</p>
+<div class="org-src-container">
+<pre class="src src-text">[profile mfa]
+output = json
+region = ap-northeast-1
+credential_process = cat /Users/kawahara.masahiro/.aws/tmp_cred.json
+</pre>
+</div>
+
+<p>
+最後の行は <code>credential_process = cat (tmp_cred.jsonへの絶対パス)</code> とします。
+認証情報「tmp_cred.json」 を <a href="#org7e7fbcc">2. 認証情報の取得</a> で生成します。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7e7fbcc" class="outline-4">
+<h4 id="org7e7fbcc">2. 認証情報の取得</h4>
+<div class="outline-text-4" id="text-org7e7fbcc">
+<p>
+▼ <code>aws sts assume-role</code> で一時的な認証情報を取得します。
+以下スクリプトを実行します。
+</p>
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #a0522d;">MFA_ARN</span>=<span style="color: #8b2252;">'arn:aws:iam::xxxxx:mfa/cm-kawahara.masahiro'</span>
+<span style="color: #a0522d;">ROLE_ARN</span>=<span style="color: #8b2252;">'arn:aws:iam::yyyyy:role/cm-kawahara.masahiro'</span>
+
+aws --output json <span style="color: #8b2252;">\</span>
+  sts assume-role <span style="color: #8b2252;">\</span>
+  --role-arn <span style="color: #8b2252;">"$ROLE_ARN"</span> <span style="color: #8b2252;">\</span>
+  --role-session-name ar-cred-proc <span style="color: #8b2252;">\</span>
+  --serial-number <span style="color: #8b2252;">"$MFA_ARN"</span> <span style="color: #8b2252;">\</span>
+  --token-code $<span style="color: #a0522d;">MFA</span> <span style="color: #8b2252;">\</span>
+| jq <span style="color: #8b2252;">".Credentials + {Version: 1}"</span> &gt; ~/.aws/tmp_cred.json
+</pre>
+</div>
+
+<p>
+▼ 「tmp_cred.json」を表示します。
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">cat ~/.aws/tmp_cred.json
+</pre>
+</div>
+
+<pre class="example">
+{
+  "AccessKeyId": "ASIXXXXXXXXXXXX",
+  "SecretAccessKey": "L3iXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+  "SessionToken": "FQoXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX,
+  "Expiration": "2019-08-16T09:27:22Z",
+  "Version": 1
+}
+
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org79f6386" class="outline-4">
+<h4 id="org79f6386">3. aws コマンド実行</h4>
+<div class="outline-text-4" id="text-org79f6386">
+<p>
+以降、 "Expiration" に記載されている時刻まで AWSコマンドを実行できます。
+実行する際は <a href="#orga77dfac">1. 設定ファイルの編集</a> の profile <code>mfa</code> を指定します。
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">aws --profile mfa s3 ls
+</pre>
+</div>
+
+<pre class="example">
+2019-08-05 16:36:39 aws-athena-query-results-xxxxx-ap-northeast-1
+2019-07-08 18:43:57 cf-templates-xxxxx-ap-northeast-1
+2019-05-20 10:04:01 cm-members-xxxxx
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc38a997" class="outline-2">
+<h2 id="orgc38a997">参考</h2>
+<div class="outline-text-2" id="text-orgc38a997">
+<ul class="org-ul">
+<li><a href="https://orgmode.org/worg/org-contrib/babel/intro.html">https://orgmode.org/worg/org-contrib/babel/intro.html</a></li>
+<li><a href="https://tamura70.hatenadiary.org/entry/20100310/org">https://tamura70.hatenadiary.org/entry/20100310/org</a></li>
+<li><a href="https://emacs-jp.github.io/tips/environment-variable">https://emacs-jp.github.io/tips/environment-variable</a></li>
+<li><a href="https://dev.classmethod.jp/cloud/aws/aws-cli-credential_process-assume-role/">https://dev.classmethod.jp/cloud/aws/aws-cli-credential_process-assume-role/</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: kawahara.masahiro</p>
+<p class="date">Created: 2019-08-19 Mon 07:23</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
