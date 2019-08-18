@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-08-19 Mon 08:13 -->
+<!-- 2019-08-19 Mon 08:14 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Run AWS CLI in an Org buffer</title>
@@ -240,46 +240,46 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgf04e085">はじめに</a>
+<li><a href="#org642652f">はじめに</a>
 <ul>
-<li><a href="#orgc645c89">実行環境</a></li>
+<li><a href="#org9d07a55">実行環境</a></li>
 </ul>
 </li>
-<li><a href="#orga256da3">要約</a></li>
-<li><a href="#orgb1ab404">前準備</a>
+<li><a href="#org3ab4787">要約</a></li>
+<li><a href="#org8dc0437">前準備</a>
 <ul>
-<li><a href="#org22d3f08">AWS CLI</a></li>
-<li><a href="#org4da1ae7">Emacs: AWS CLI パス設定</a></li>
-<li><a href="#orge8766d0">Emacs: org-babel 設定</a></li>
+<li><a href="#org3ae3fa2">AWS CLI</a></li>
+<li><a href="#org8a26c47">Emacs: AWS CLI パス設定</a></li>
+<li><a href="#orgaf7de15">Emacs: org-babel 設定</a></li>
 </ul>
 </li>
-<li><a href="#org83883cb">AWS CLI実行</a>
+<li><a href="#org8600151">AWS CLI実行</a>
 <ul>
-<li><a href="#orgdca7bb7">※MFA設定への対応</a>
+<li><a href="#org84d531e">※MFA設定への対応</a>
 <ul>
-<li><a href="#org7813b55">1. 設定ファイルの編集</a></li>
-<li><a href="#org2391e45">2. 認証情報の取得</a></li>
-<li><a href="#orge8e6b25">3. <code>aws</code> コマンド実行</a></li>
+<li><a href="#org56d734d">1. 設定ファイルの編集</a></li>
+<li><a href="#org3168a00">2. 認証情報の取得</a></li>
+<li><a href="#orgadf2b26">3. <code>aws</code> コマンド実行</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org0d13ffd">さいごに</a></li>
-<li><a href="#org1944e2f">参考</a></li>
+<li><a href="#orgd2e0a60">さいごに</a></li>
+<li><a href="#orgbe590a2">参考</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgf04e085" class="outline-2">
-<h2 id="orgf04e085">はじめに</h2>
-<div class="outline-text-2" id="text-orgf04e085">
+<div id="outline-container-org642652f" class="outline-2">
+<h2 id="org642652f">はじめに</h2>
+<div class="outline-text-2" id="text-org642652f">
 <ul class="org-ul">
 <li>org-babel で AWS CLIを実行してみました。手順を記載します。</li>
 </ul>
 </div>
-<div id="outline-container-orgc645c89" class="outline-3">
-<h3 id="orgc645c89">実行環境</h3>
-<div class="outline-text-3" id="text-orgc645c89">
+<div id="outline-container-org9d07a55" class="outline-3">
+<h3 id="org9d07a55">実行環境</h3>
+<div class="outline-text-3" id="text-org9d07a55">
 <dl class="org-dl">
 <dt>OS</dt><dd>macOS Mojave, version 10.14.5</dd>
 <dt>Emacs</dt><dd>version 26.2</dd>
@@ -288,9 +288,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orga256da3" class="outline-2">
-<h2 id="orga256da3">要約</h2>
-<div class="outline-text-2" id="text-orga256da3">
+<div id="outline-container-org3ab4787" class="outline-2">
+<h2 id="org3ab4787">要約</h2>
+<div class="outline-text-2" id="text-org3ab4787">
 <ol class="org-ol">
 <li>AWS CLIをインストールします</li>
 
@@ -323,21 +323,21 @@ Emacs の <code>init.el</code> に下記追加します
 </ol>
 </div>
 </div>
-<div id="outline-container-orgb1ab404" class="outline-2">
-<h2 id="orgb1ab404">前準備</h2>
-<div class="outline-text-2" id="text-orgb1ab404">
+<div id="outline-container-org8dc0437" class="outline-2">
+<h2 id="org8dc0437">前準備</h2>
+<div class="outline-text-2" id="text-org8dc0437">
 </div>
-<div id="outline-container-org22d3f08" class="outline-3">
-<h3 id="org22d3f08">AWS CLI</h3>
-<div class="outline-text-3" id="text-org22d3f08">
+<div id="outline-container-org3ae3fa2" class="outline-3">
+<h3 id="org3ae3fa2">AWS CLI</h3>
+<div class="outline-text-3" id="text-org3ae3fa2">
 <p>
 AWS CLIを <a href="https://aws.amazon.com/jp/cli/">こちら</a> からインストールします。
 </p>
 </div>
 </div>
-<div id="outline-container-org4da1ae7" class="outline-3">
-<h3 id="org4da1ae7">Emacs: AWS CLI パス設定</h3>
-<div class="outline-text-3" id="text-org4da1ae7">
+<div id="outline-container-org8a26c47" class="outline-3">
+<h3 id="org8a26c47">Emacs: AWS CLI パス設定</h3>
+<div class="outline-text-3" id="text-org8a26c47">
 <p>
 <code>aws</code> コマンドを認識させるために Emacsの PATH設定を行います。
 <a href="https://github.com/purcell/exec-path-from-shell">exec-path-from-shell</a> を使って シェルのPATHを Emacsに引き継ぎます。
@@ -356,20 +356,20 @@ Installable packages are available via MELPA: do <code>M-x package-install RET e
 インストール後、 <code>init.el</code> に下記設定を記載します。
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp" id="orgebe7d53">(<span style="color: #a020f0;">when</span> (memq window-system '(mac ns x))
+<pre class="src src-emacs-lisp" id="org5e8a824">(<span style="color: #a020f0;">when</span> (memq window-system '(mac ns x))
   (exec-path-from-shell-initialize))
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-orge8766d0" class="outline-3">
-<h3 id="orge8766d0">Emacs: org-babel 設定</h3>
-<div class="outline-text-3" id="text-orge8766d0">
+<div id="outline-container-orgaf7de15" class="outline-3">
+<h3 id="orgaf7de15">Emacs: org-babel 設定</h3>
+<div class="outline-text-3" id="text-orgaf7de15">
 <p>
 以下のように <code>init.el</code> に設定します。
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp" id="org6d3f333"><span style="color: #b22222;">;; </span><span style="color: #b22222;">&#12467;&#12540;&#12489;&#23455;&#34892;&#26178;&#12395; confirm &#12375;&#12394;&#12356;</span>
+<pre class="src src-emacs-lisp" id="org679bc75"><span style="color: #b22222;">;; </span><span style="color: #b22222;">&#12467;&#12540;&#12489;&#23455;&#34892;&#26178;&#12395; confirm &#12375;&#12394;&#12356;</span>
 (<span style="color: #a020f0;">setq</span> org-confirm-babel-evaluate nil)
 
 <span style="color: #b22222;">;; </span><span style="color: #b22222;">&#23455;&#34892;&#12391;&#12365;&#12427;&#35328;&#35486;&#12434;&#25351;&#23450;</span>
@@ -385,9 +385,9 @@ Installable packages are available via MELPA: do <code>M-x package-install RET e
 </div>
 </div>
 
-<div id="outline-container-org83883cb" class="outline-2">
-<h2 id="org83883cb">AWS CLI実行</h2>
-<div class="outline-text-2" id="text-org83883cb">
+<div id="outline-container-org8600151" class="outline-2">
+<h2 id="org8600151">AWS CLI実行</h2>
+<div class="outline-text-2" id="text-org8600151">
 <p>
 <b>▼bashコマンドを実行してみます</b>
 </p>
@@ -444,17 +444,17 @@ Installable packages are available via MELPA: do <code>M-x package-install RET e
 </div>
 </div>
 
-<div id="outline-container-orgdca7bb7" class="outline-3">
-<h3 id="orgdca7bb7">※MFA設定への対応</h3>
-<div class="outline-text-3" id="text-orgdca7bb7">
+<div id="outline-container-org84d531e" class="outline-3">
+<h3 id="org84d531e">※MFA設定への対応</h3>
+<div class="outline-text-3" id="text-org84d531e">
 <p>
 MFAを設定している場合は少々プロセスが煩雑になります。
 以下、  <span class="underline">MFA設定有り</span> かつ <span class="underline">スイッチロール有り</span> のケースの対応です。
 </p>
 </div>
-<div id="outline-container-org7813b55" class="outline-4">
-<h4 id="org7813b55">1. 設定ファイルの編集</h4>
-<div class="outline-text-4" id="text-org7813b55">
+<div id="outline-container-org56d734d" class="outline-4">
+<h4 id="org56d734d">1. 設定ファイルの編集</h4>
+<div class="outline-text-4" id="text-org56d734d">
 <p>
 <code>~/.aws/config</code> ファイルを以下のように記述します。
 </p>
@@ -468,14 +468,14 @@ credential_process = cat /Users/kawahara.masahiro/.aws/tmp_cred.json
 
 <p>
 最後の行は <code>credential_process = cat (tmp_cred.jsonへの絶対パス)</code> とします。
-認証情報「tmp_cred.json」 を <a href="#org2391e45">2. 認証情報の取得</a> で生成します。
+認証情報「tmp_cred.json」 を <a href="#org3168a00">2. 認証情報の取得</a> で生成します。
 </p>
 </div>
 </div>
 
-<div id="outline-container-org2391e45" class="outline-4">
-<h4 id="org2391e45">2. 認証情報の取得</h4>
-<div class="outline-text-4" id="text-org2391e45">
+<div id="outline-container-org3168a00" class="outline-4">
+<h4 id="org3168a00">2. 認証情報の取得</h4>
+<div class="outline-text-4" id="text-org3168a00">
 <p>
 <code>aws sts assume-role</code> で一時的な認証情報を取得します。
 以下スクリプトを実行します。
@@ -523,9 +523,9 @@ credential_process = cat /Users/kawahara.masahiro/.aws/tmp_cred.json
 </div>
 </div>
 
-<div id="outline-container-orge8e6b25" class="outline-4">
-<h4 id="orge8e6b25">3. <code>aws</code> コマンド実行</h4>
-<div class="outline-text-4" id="text-orge8e6b25">
+<div id="outline-container-orgadf2b26" class="outline-4">
+<h4 id="orgadf2b26">3. <code>aws</code> コマンド実行</h4>
+<div class="outline-text-4" id="text-orgadf2b26">
 <p>
 以降、 "Expiration" に記載されている時刻まで AWSコマンドを実行できます。
 </p>
@@ -545,9 +545,9 @@ credential_process = cat /Users/kawahara.masahiro/.aws/tmp_cred.json
 </div>
 </div>
 
-<div id="outline-container-org0d13ffd" class="outline-2">
-<h2 id="org0d13ffd">さいごに</h2>
-<div class="outline-text-2" id="text-org0d13ffd">
+<div id="outline-container-orgd2e0a60" class="outline-2">
+<h2 id="orgd2e0a60">さいごに</h2>
+<div class="outline-text-2" id="text-orgd2e0a60">
 <p>
 今回使用したOrgファイル他を下記に置いています。
 </p>
@@ -564,9 +564,9 @@ credential_process = cat /Users/kawahara.masahiro/.aws/tmp_cred.json
 </p>
 </div>
 </div>
-<div id="outline-container-org1944e2f" class="outline-2">
-<h2 id="org1944e2f">参考</h2>
-<div class="outline-text-2" id="text-org1944e2f">
+<div id="outline-container-orgbe590a2" class="outline-2">
+<h2 id="orgbe590a2">参考</h2>
+<div class="outline-text-2" id="text-orgbe590a2">
 <ul class="org-ul">
 <li><a href="https://orgmode.org/worg/org-contrib/babel/intro.html">https://orgmode.org/worg/org-contrib/babel/intro.html</a></li>
 <li><a href="https://tamura70.hatenadiary.org/entry/20100310/org">https://tamura70.hatenadiary.org/entry/20100310/org</a></li>
@@ -578,7 +578,7 @@ credential_process = cat /Users/kawahara.masahiro/.aws/tmp_cred.json
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: kawahara.masahiro</p>
-<p class="date">Created: 2019-08-19 Mon 08:13</p>
+<p class="date">Created: 2019-08-19 Mon 08:14</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
