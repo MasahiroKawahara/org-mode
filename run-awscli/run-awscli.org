@@ -7,11 +7,6 @@
 #+OPTIONS: toc:t todo:nil num:nil \n:nil ^:nil
 #+EXPORT_FILE_NAME: index
 
-# # ゴール
-#   - なんか org-mode 便利そうと思ってもらえる
-#   - org-mode 利用者は org buffer内で コードを実行する方法を理解してもらう
-#   - org-mode 利用者は org buffer内で AWS CLIを実行・管理する方法を理解してもらう
-
 * はじめに
   - org-babel で AWS CLIを実行してみました。手順を記載します。
 ** 実行環境
@@ -232,9 +227,10 @@
     - [[https://raw.githubusercontent.com/MasahiroKawahara/org-mode/master/run-awscli/run-awscli.org][run-awscli.org(raw)]]
 
   ▼Orgファイルの HTML export
-  https://masahirokawahara.github.io/org-mode/run-awscli/
+  - https://masahirokawahara.github.io/org-mode/run-awscli/
+
 * 参考
-  - https://orgmode.org/worg/org-contrib/babel/intro.html
-  - https://tamura70.hatenadiary.org/entry/20100310/org
-  - https://emacs-jp.github.io/tips/environment-variable
-  - https://dev.classmethod.jp/cloud/aws/aws-cli-credential_process-assume-role/
+  - [[https://emacs-jp.github.io/tips/environment-variable][環境変数の設定 --Emacs JP]]
+  - [[https://orgmode.org/worg/org-contrib/babel/intro.html][Babel Introduction --orgmode.org]]
+  - [[https://tamura70.hatenadiary.org/entry/20100310/org][Emacs org-modeを使ってみる: (35) org-babel-perlを使う1/4 --屯遁のパズルとプログラミングの日記]]
+  - [[https://dev.classmethod.jp/cloud/aws/aws-cli-credential_process-assume-role/][credential_process でAssumeRoleする --DevelopersIO]]

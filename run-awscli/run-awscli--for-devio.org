@@ -1,0 +1,211 @@
+#+OPTIONS: toc:nil num:UNNUMBERD todo:nil
+
+* 【Org-mode】Org文書内で AWS CLIを実行する
+** はじめに
+    [[https://orgmode.org/ja/][Org-mode]] は Emacs のメジャーモードの 1つです。
+
+    #+BEGIN_QUOTE
+    Org-mode は、ノートの保存、TODOリストの管理、プロジェクト計画、文書編集のためのモードです。
+    高速で効率的なプレーンテキストのシステムを使ってファイルを編集します。
+    #+END_QUOTE
+
+    アウトライナーとしての利用はもちろん、TODOタスク管理ツールとしても使えます。
+    表計算や 別形式へのエクスポート (Markdown, HTML, PDF) なども可能です。
+    また、Org文書内で シェルや Pythonといったプログラムの実行も可能です。
+    プログラムとドキュメントを 1つの Org文書に記述する [[https://ja.wikipedia.org/wiki/%E6%96%87%E8%8A%B8%E7%9A%84%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0][文芸的プログラミング]] にも対応しています。
+
+    #+BEGIN_EXPORT html
+ <img class="image-border" src="https://cdn-ssl-devio-img.classmethod.jp/wp-content/uploads/2019/08/orgaws-6.png" />
+<center>▲もちろんこの記事も Org文書で作成しています</center>
+    #+END_EXPORT
+    
+    そんな *何でもできる* Org-mode ですが、
+    今回は コード実行機能(*Org Babel*)を使って Org文書内で AWS CLIを実行してみます。
+*** 実行環境
+   - OS :: macOS Mojave, version 10.14.5
+   - Emacs :: version 26.2
+   - Org-mode :: version 9.1.9
+** 要約
+   *1* AWS CLIをインストールします。
+
+   *2* [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] を使って シェルのPATHを Emacsに引き継ぎます
+
+   *3* Emacs の ~init.el~ に下記追加します
+   #+BEGIN_EXPORT html
+ [text]  
+ ;;;; exec-path-from-shell
+ (when (memq window-system '(mac ns x))
+   (exec-path-from-shell-initialize))
+
+ ;;;; org-babel
+ ;; コード実行時に confirm しない
+ (setq org-confirm-babel-evaluate nil)
+
+ ;; 実行できる言語を指定
+ (org-babel-do-load-languages
+  'org-babel-load-languages
+  '(
+    (shell . t)
+    )
+  )
+ [/text]  
+   #+END_EXPORT
+
+   *4* AWS CLIが実行できます
+   #+BEGIN_EXPORT html
+ <img class="image-border" src="https://cdn-ssl-devio-img.classmethod.jp/wp-content/uploads/2019/08/orgaws-1.png" />
+   #+END_EXPORT
+** 前準備
+*** AWS CLI
+    AWS CLIを [[https://aws.amazon.com/jp/cli/][こちら]] からインストールします。
+*** Emacs: AWS CLI パス設定
+    ~aws~ コマンドを認識させるために Emacsの PATH設定を行います。
+    [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] を使って シェルのPATHを Emacsに引き継ぎます。
+
+    [[https://github.com/purcell/exec-path-from-shell#installation][Installation]] どおりに ~exec-path-from-shell~ インストールを行います。
+    #+BEGIN_QUOTE
+    Installable packages are available via MELPA: do ~M-x package-install RET exec-path-from-shell RET~.
+    #+END_QUOTE
+
+    インストール後、 ~init.el~ に下記設定を記載します。
+    #+BEGIN_EXPORT html
+ [text]
+ (when (memq window-system '(mac ns x))
+   (exec-path-from-shell-initialize))
+ [/text]
+    #+END_EXPORT
+*** Emacs: org-babel 設定
+    以下のように ~init.el~ に設定します。
+    #+BEGIN_EXPORT html
+ [text]
+ ;; コード実行時に confirm しない
+ (setq org-confirm-babel-evaluate nil)
+
+ ;; 実行できる言語を指定
+ (org-babel-do-load-languages
+  'org-babel-load-languages
+  '(
+    (shell . t)
+    )
+  )
+ [/text]
+    #+END_EXPORT
+** AWS CLI実行
+   *▼bashコマンドを実行してみます*
+
+   コードブロック内( =#+BEGIN_SRC ... #+END_SRC= )で /C-c C-c/ ( ~org-babel-execute-src-block~ ) を実行します。
+   記述したコードが評価され、結果が =#+RESULTS= 直下に表示されます。
+   #+BEGIN_EXPORT html
+ [text]
+ #+BEGIN_SRC sh
+ ls
+ #+END_SRC
+
+ #+RESULTS[789f649c27406e24e1fb6689fcf186a331f138b6]:
+ : img
+ : index.html
+ : init.el
+ : run-awscli.org
+ [/text]
+   #+END_EXPORT
+
+   #+BEGIN_EXPORT html
+ <img class="image-border" src="https://cdn-ssl-devio-img.classmethod.jp/wp-content/uploads/2019/08/orgaws-2.png" />
+   #+END_EXPORT
+  
+   *▼ ~aws~ コマンドのパスが通っているか確認します*
+   #+BEGIN_EXPORT html
+[text]   
+#+BEGIN_SRC sh
+aws --version
+#+END_SRC
+
+#+RESULTS[94050750f89caff84a83600af87f81985908ce7e]:
+: aws-cli/1.16.173 Python/3.7.3 Darwin/18.7.0 botocore/1.12.163
+[/text]   
+   #+END_EXPORT
+
+   *▼ ~aws~ コマンドを実行してみます*
+
+    ~aws s3 ls~ でバケット一覧を表示してみます。
+    #+BEGIN_EXPORT html
+[text]
+#+BEGIN_SRC sh :exports both
+aws s3 ls
+#+END_SRC
+
+#+RESULTS[5681767c5c45395a7ae378fac0a022d23ad41199]:
+: 2019-08-05 16:36:39 aws-athena-query-results-xxxxx-ap-northeast-1
+: 2019-07-08 18:43:57 cf-templates-xxxxx-ap-northeast-1
+: 2019-05-20 10:04:01 cm-members-xxxxx
+[/text]
+    #+END_EXPORT
+
+*** ※MFA設定への対応
+    MFAを設定している場合は少々プロセスが煩雑になります。
+    以下、  ~MFA設定有り~ かつ ~スイッチロール有り~ のケースの対応です。
+**** *設定ファイルの編集*
+     ~~/.aws/config~ ファイルを以下のように記述します。
+     #+BEGIN_EXPORT html
+[text]
+[profile mfa]
+output = json
+region = ap-northeast-1
+credential_process = cat /Users/kawahara.masahiro/.aws/tmp_cred.json
+[/text]
+     #+END_EXPORT
+
+     最後の行は ~credential_process = cat (tmp_cred.jsonへの絶対パス)~ とします。
+     認証情報「tmp_cred.json」 を以降で生成します。
+
+**** *認証情報の取得*
+     ~aws sts assume-role~ で一時的な認証情報を取得します。
+     以下スクリプトを実行します。
+
+     #+BEGIN_EXPORT html
+[bash]
+MFA='240030'
+MFA_ARN='arn:aws:iam::xxxxx:mfa/cm-kawahara.masahiro'
+ROLE_ARN='arn:aws:iam::yyyyy:role/cm-kawahara.masahiro'
+
+aws --output json \
+  sts assume-role \
+  --role-arn "$ROLE_ARN" \
+  --role-session-name ar-cred-proc \
+  --serial-number "$MFA_ARN" \
+  --token-code $MFA \
+| jq ".Credentials + {Version: 1}" > ~/.aws/tmp_cred.json
+[/bash]
+     #+END_EXPORT
+
+     今回は Org buffer 上で shellを実行してみます。
+     下記の ~:var MFA=xxxxxx~ 部分に MFAの認証コードを記入して実行(/C-c C-c/ )します。
+
+     #+BEGIN_EXPORT html
+ <img class="image-border" src="https://cdn-ssl-devio-img.classmethod.jp/wp-content/uploads/2019/08/orgaws-3.png" />
+     #+END_EXPORT
+    
+     (確認) tmp_cred.json を表示します。
+     #+BEGIN_EXPORT html
+ <img class="image-border" src="https://cdn-ssl-devio-img.classmethod.jp/wp-content/uploads/2019/08/orgaws-4.png" />
+     #+END_EXPORT
+
+**** *aws コマンド実行*
+     以降、 "Expiration" に記載されている時刻まで AWSコマンドを実行できます。
+     #+BEGIN_EXPORT html
+ <img class="image-border" src="https://cdn-ssl-devio-img.classmethod.jp/wp-content/uploads/2019/08/orgaws-5.png" />
+     #+END_EXPORT
+
+** さいごに
+   今回使用したOrgファイル他を下記に置いています。
+   - [[https://github.com/MasahiroKawahara/org-mode/tree/master/run-awscli][org-mode/run-awscli --github]]
+     - [[https://raw.githubusercontent.com/MasahiroKawahara/org-mode/master/run-awscli/run-awscli.org][run-awscli.org(raw)]]
+
+   ▼Orgファイルの HTML export
+   - https://masahirokawahara.github.io/org-mode/run-awscli/
+
+** 参考
+   - [[https://emacs-jp.github.io/tips/environment-variable][環境変数の設定 --Emacs JP]]
+   - [[https://orgmode.org/worg/org-contrib/babel/intro.html][Babel Introduction --orgmode.org]]
+   - [[https://tamura70.hatenadiary.org/entry/20100310/org][Emacs org-modeを使ってみる: (35) org-babel-perlを使う1/4 --屯遁のパズルとプログラミングの日記]]
+   - [[https://dev.classmethod.jp/cloud/aws/aws-cli-credential_process-assume-role/][credential_process でAssumeRoleする --DevelopersIO]]
