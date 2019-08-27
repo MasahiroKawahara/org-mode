@@ -1,0 +1,229 @@
+#+TITLE: Org-mode から reveal.js スライドを作成する #org-re-reveal
+#+Author: Masahiro Kawahara
+
+#+REVEAL_ROOT: https://revealjs.com/
+#+REVEAL_HLEVEL: 1
+#+REVEAL_THEME: simple
+#+REVEAL_TRANS: slide
+#+REVEAL_TITLE_SLIDE: <h3>%t</h3><h4>%a</h4>
+
+#+REVEAL_TITLE_SLIDE_BACKGROUND: ./img/title-classmethod.png
+
+#+OPTIONS: num:nil toc:nil
+#+OPTIONS: org-re-reveal-center:nil
+
+* インストール
+  :PROPERTIES:
+  :reveal_background: #123456
+  :END:
+** 
+  ソースは [[https://gitlab.com/oer/org-re-reveal][こちら (gitlab)]]
+
+  インストールの方法は2つ。
+  1. MELPA からインストール
+  2. GitLab からインストール
+** MELPA からインストール
+  1. (やっていない人) MELPAを使えるようにする
+  2. org-re-reveal インストール
+     #+BEGIN_SRC text
+     M-x package-install [RET]
+     --> org-re-reveal [RET]
+     #+END_SRC
+  3. init.el に下記追加
+     #+BEGIN_SRC emacs-lisp
+     (require 'org-re-reveal)
+     #+END_SRC
+** GitLab からインストール
+   1. ~git clone~ 実行
+      #+BEGIN_SRC sh
+      git clone https://gitlab.com/oer/org-re-reveal.git
+      #+END_SRC
+   2. org-re-reveal.el を ~load-path~ に追加
+   3. init.el に下記追加
+      #+BEGIN_SRC emacs-lisp
+      (require 'org-re-reveal)
+      #+END_SRC
+* First Try
+  :PROPERTIES:
+  :reveal_background: #123456
+  :END:
+** (必須) reveal.js 場所の指定
+   1. file で指定
+   2. https で指定
+*** *1. file で指定*
+    init.el に下記追加。
+    #+BEGIN_SRC emacs-lisp
+    (setq org-re-reveal-root "file:///PATH-TO-REVEAL.JS")
+    #+END_SRC
+
+    もしくは Org文書に設定追記
+    #+BEGIN_SRC org
+    #+REVEAL_ROOT: file:///d:/reveal.js
+    #+END_SRC
+*** *2. https で指定*
+    #+BEGIN_SRC org
+    #+REVEAL_ROOT: https://revealjs.com/
+    #+END_SRC
+    ※ reveal.js document 曰く "not recommend this"
+** Export
+   [[file:./img/org-reveal-01.png]]
+   - C-c C-e v v :: ファイルへ保存
+   - C-c C-e v b :: ファイルへ保存してブラウザで開く
+   - C-c C-e v v :: 編集中の見出しの内容のみファイルへ保存
+* 主な設定項目
+  :PROPERTIES:
+  :reveal_background: #123456
+  :END:
+** *HLevel :* スライドレイアウト
+   #+BEGIN_SRC org
+   #+REVEAL_HLEVEL: 1
+   #+END_SRC
+   [[file:./img/hlevel.png]]
+
+   #+BEGIN_SRC org
+   #+REVEAL_HLEVEL: 2
+   #+END_SRC
+   [[file:./img/hlevel2.png]]
+
+   # 画像: [[https://gitlab.com/oer/org-re-reveal][org-re-reveal]]
+** *Force Split :* スライド分割
+   #+BEGIN_SRC org
+   My favorite scenes are (in this order)
+   1. The attack of the Rohirrim
+   2. Eowyn's fight with the witch king
+      + this was already my favorite scene in the book
+      + I really like Miranda Otto.
+   3. Peter Jackson being shot by Legolas
+      - on DVD only
+      He makes a really funny face when it happens.
+
+   #+REVEAL: split
+
+   But in the end, no individual scenes matter but the film as a whole.
+   Important actors in this film are:
+   - Elijah Wood :: He plays Frodo
+   - Sean Astin :: He plays Sam, Frodo's friend. I still remember him
+        very well from his role as Mikey Walsh in /The Goonies/.
+   
+   -- https://orgmode.org/org.html#Plain-Lists
+   #+END_SRC
+   ↓
+   #+REVEAL: split
+
+   My favorite scenes are (in this order)
+   1. The attack of the Rohirrim
+   2. Eowyn's fight with the witch king
+      + this was already my favorite scene in the book
+      + I really like Miranda Otto.
+   3. Peter Jackson being shot by Legolas
+      - on DVD only
+      He makes a really funny face when it happens.
+
+   #+REVEAL: split
+
+   But in the end, no individual scenes matter but the film as a whole.
+   Important actors in this film are:
+   - Elijah Wood :: He plays Frodo
+   - Sean Astin :: He plays Sam, Frodo's friend. I still remember him
+        very well from his role as Mikey Walsh in /The Goonies/.
+   
+   -- From https://orgmode.org/org.html#Plain-Lists
+
+** *Theme :* スライドのテーマ
+   reveal.js ディレクトリの "css/theme/" から選択可能
+   #+BEGIN_SRC org
+   # このスライドは simple
+   #+REVEAL_THEME: simple
+   #+END_SRC
+
+   ↓で各テーマを確認できる
+   #+BEGIN_EXPORT html
+   <a href="https://revealjs.com/#/themes" target="_blank" rel="noopener noreferrer">
+   https://revealjs.com/#/themes
+   </a>
+   #+END_EXPORT
+** *Transition :* スライド遷移
+   none, fade, slide, convex, concave, zoom から選択
+   #+BEGIN_SRC org
+   # このスライドは "slide"
+   #+REVEAL_TRANS: slide
+   #+END_SRC
+** *Title Slide:* タイトルスライド
+   タイトルスライドがいらない場合
+   #+BEGIN_SRC org
+   #+REVEAL_TITLE_SLIDE:
+   #+END_SRC
+
+   タイトルスライドのカスタマイズ例
+   #+BEGIN_SRC org
+   #+TITLE: Org-mode から reveal.js スライドを作成する #org-re-reveal
+   #+Author: Masahiro Kawahara
+
+   #+REVEAL_TITLE_SLIDE: <h3>%t</h3><h4>%a</h4>
+   # %t はタイトル、 %a は 著者
+   #+END_SRC
+** *Slide Background :* 背景色
+   :PROPERTIES:
+   :reveal_background: #123456
+   :END:
+   ~:PROPERTIES: ... :END:~ 内に
+   ~:reveal_background: #RGB~ を書く
+   #+BEGIN_SRC org
+,** *Slide Background :* 背景色
+   :PROPERTIES:
+   :reveal_background: #123456
+   :END:
+   #+END_SRC
+** *Slide Image Background :* 背景画像
+   :PROPERTIES:
+   :reveal_background: ./img/mesoko.png
+   :END:
+   ~:PROPERTIES: ... :END:~ 内に
+   ~:reveal_background: $IMAGE-PATH~ を書く
+   #+BEGIN_SRC org
+,** *Slide Image Background :* 背景画像
+   :PROPERTIES:
+   :reveal_background: ./img/mesoko.png
+   :END:
+   #+END_SRC
+** *Repeating Image Background :* リピート
+   :PROPERTIES:
+   :reveal_background: ./img/mesoko.png
+   :reveal_background_size: 200px
+   :reveal_background_repeat: repeat
+   :END:
+   #+BEGIN_SRC org
+,** *Repeating Image Background :* リピート
+   :PROPERTIES:
+   :reveal_background: ./img/mesoko.png
+   :reveal_background_size: 200px
+   :reveal_background_repeat: repeat
+   :END:
+   #+END_SRC
+** *Title Slide Background Image :* タイトル背景
+   #+BEGIN_SRC org
+   #+REVEAL_TITLE_SLIDE_BACKGROUND: ./img/title-classmethod.png
+   ↓背景画像をリピートする場合は下記コメントアウトを消す
+   # #+REVEAL_TITLE_SLIDE_BACKGROUND_SIZE: 200px
+   # #+REVEAL_TITLE_SLIDE_BACKGROUND_REPEAT: repeat
+   #+END_SRC
+   #+attr_html: :width 400px
+   [[file:./img/org-reveal-02-title.png]]
+** *List Fragment :* リストの遅延表示
+   #+BEGIN_SRC org
+   #+ATTR_REVEAL: :frag (appear)
+   -  list item 1
+   -  list item 2
+   -  list item 3
+   #+END_SRC
+   Press [↓]
+   #+ATTR_REVEAL: :frag (appear)
+   -  list item 1
+   -  list item 2
+   -  list item 3
+** *En-/Disable num,toc* 見出しの項番・目次の表示/非表示
+   #+BEGIN_SRC org
+   # num:nil ... 見出しの項番を非表示に
+   # toc:nil ... 目次の非表示に
+   #+OPTIONS: num:nil toc:nil
+   #+END_SRC

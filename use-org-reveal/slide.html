@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Org-mode から reveal.js スライドを作成する #org-re-reveal</title>
+<meta name="author" content="Masahiro Kawahara"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="https://revealjs.com/css/reveal.css"/>
+
+<link rel="stylesheet" href="https://revealjs.com/css/theme/simple.css" id="theme"/>
+
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'https://revealjs.com/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide" data-background="./img/title-classmethod.png">
+<h3>Org-mode から reveal.js スライドを作成する #org-re-reveal</h3><h4>Masahiro Kawahara</h4>
+</section>
+
+<section>
+<section id="slide-org854f413" data-background="#123456">
+<h2 id="org854f413">インストール</h2>
+</section>
+<section id="slide-org9deb466">
+<h3 id="org9deb466"></h3>
+<p>
+ソースは <a href="https://gitlab.com/oer/org-re-reveal">こちら (gitlab)</a>
+</p>
+
+<p>
+インストールの方法は2つ。
+</p>
+<ol>
+<li>MELPA からインストール</li>
+<li>GitLab からインストール</li>
+
+</ol>
+</section>
+<section id="slide-orgd0fcde9">
+<h3 id="orgd0fcde9">MELPA からインストール</h3>
+<ol>
+<li>(やっていない人) MELPAを使えるようにする</li>
+<li><p>
+org-re-reveal インストール
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-text">M-x package-install [RET]
+--&gt; org-re-reveal [RET]
+</pre>
+</div></li>
+<li><p>
+init.el に下記追加
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-emacs-lisp">(<span style="color: #a020f0;">require</span> '<span style="color: #008b8b;">org-re-reveal</span>)
+</pre>
+</div></li>
+
+</ol>
+</section>
+<section id="slide-orgda29d30">
+<h3 id="orgda29d30">GitLab からインストール</h3>
+<ol>
+<li><p>
+<code>git clone</code> 実行
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-sh">git clone https://gitlab.com/oer/org-re-reveal.git
+</pre>
+</div></li>
+<li>org-re-reveal.el を <code>load-path</code> に追加</li>
+<li><p>
+init.el に下記追加
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-emacs-lisp">(<span style="color: #a020f0;">require</span> '<span style="color: #008b8b;">org-re-reveal</span>)
+</pre>
+</div></li>
+
+</ol>
+</section>
+</section>
+<section>
+<section id="slide-org936cfb8" data-background="#123456">
+<h2 id="org936cfb8">First Try</h2>
+</section>
+<section id="slide-orgc886759">
+<h3 id="orgc886759">(必須) reveal.js 場所の指定</h3>
+<ol>
+<li>file で指定</li>
+<li>https で指定</li>
+
+</ol>
+</section>
+<section id="slide-orgece717d">
+<h4 id="orgece717d"><b>1. file で指定</b></h4>
+<p>
+init.el に下記追加。
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-emacs-lisp">(<span style="color: #a020f0;">setq</span> org-re-reveal-root <span style="color: #8b2252;">"file:///PATH-TO-REVEAL.JS"</span>)
+</pre>
+</div>
+
+<p>
+もしくは Org文書に設定追記
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-org"><span style="color: #b22222;">#+REVEAL_ROOT: <a href="file:///d:/reveal.js">file:///d:/reveal.js</a></span>
+</pre>
+</div>
+</section>
+<section id="slide-org45aefe2">
+<h4 id="org45aefe2"><b>2. https で指定</b></h4>
+<div class="org-src-container">
+
+<pre  class="src src-org"><span style="color: #b22222;">#+REVEAL_ROOT: <a href="https://revealjs.com/">https://revealjs.com/</a></span>
+</pre>
+</div>
+<p>
+※ reveal.js document 曰く "not recommend this"
+</p>
+</section>
+<section id="slide-orgd721eaa">
+<h3 id="orgd721eaa">Export</h3>
+
+<div class="figure">
+<p><img src="./img/org-reveal-01.png" alt="org-reveal-01.png" />
+</p>
+</div>
+<dl>
+<dt>C-c C-e v v</dt><dd>ファイルへ保存</dd>
+<dt>C-c C-e v b</dt><dd>ファイルへ保存してブラウザで開く</dd>
+<dt>C-c C-e v v</dt><dd>編集中の見出しの内容のみファイルへ保存</dd>
+
+</dl>
+</section>
+</section>
+<section>
+<section id="slide-org5d66ea2" data-background="#123456">
+<h2 id="org5d66ea2">主な設定項目</h2>
+</section>
+<section id="slide-orga0c31d2">
+<h3 id="orga0c31d2"><b>HLevel :</b> スライドレイアウト</h3>
+<div class="org-src-container">
+
+<pre  class="src src-org"><span style="color: #b22222;">#+REVEAL_HLEVEL: 1</span>
+</pre>
+</div>
+
+<div class="figure">
+<p><img src="./img/hlevel.png" alt="hlevel.png" />
+</p>
+</div>
+
+<div class="org-src-container">
+
+<pre  class="src src-org"><span style="color: #b22222;">#+REVEAL_HLEVEL: 2</span>
+</pre>
+</div>
+
+<div class="figure">
+<p><img src="./img/hlevel2.png" alt="hlevel2.png" />
+</p>
+</div>
+</section>
+<section id="slide-orge6e15a9">
+<h3 id="orge6e15a9"><b>Force Split :</b> スライド分割</h3>
+<div class="org-src-container">
+
+<pre  class="src src-org">My favorite scenes are (in this order)
+1. The attack of the Rohirrim
+2. Eowyn's fight with the witch king
+   + this was already my favorite scene in the book
+   + I really like Miranda Otto.
+3. Peter Jackson being shot by Legolas
+   - on DVD only
+   He makes a really funny face when it happens.
+
+<span style="color: #b22222;">#+REVEAL: split</span>
+
+But in the end, no individual scenes matter but the film as a whole.
+Important actors in this film are:
+- <span style="font-weight: bold;">Elijah Wood ::</span> He plays Frodo
+- <span style="font-weight: bold;">Sean Astin ::</span> He plays Sam, Frodo's friend. I still remember him
+     very well from his role as Mikey Walsh in <span style="font-style: italic;">/The Goonies/</span>.
+
+-- <span style="color: #3a5fcd; text-decoration: underline;"><a href="https://orgmode.org/org.html#Plain-Lists">https://orgmode.org/org.html#Plain-Lists</a></span>
+</pre>
+</div>
+<p>
+↓
+</p>
+</section>
+<section>
+
+<p>
+My favorite scenes are (in this order)
+</p>
+<ol>
+<li>The attack of the Rohirrim</li>
+<li>Eowyn's fight with the witch king
+<ul>
+<li>this was already my favorite scene in the book</li>
+<li>I really like Miranda Otto.</li>
+
+</ul></li>
+<li><p>
+Peter Jackson being shot by Legolas
+</p>
+<ul>
+<li>on DVD only</li>
+
+</ul>
+<p>
+He makes a really funny face when it happens.
+</p></li>
+
+</ol>
+
+</section>
+<section>
+
+<p>
+But in the end, no individual scenes matter but the film as a whole.
+Important actors in this film are:
+</p>
+<dl>
+<dt>Elijah Wood</dt><dd>He plays Frodo</dd>
+<dt>Sean Astin</dt><dd>He plays Sam, Frodo's friend. I still remember him
+very well from his role as Mikey Walsh in <i>The Goonies</i>.</dd>
+
+</dl>
+
+<p>
+&#x2013; From <a href="https://orgmode.org/org.html#Plain-Lists">https://orgmode.org/org.html#Plain-Lists</a>
+</p>
+
+</section>
+<section id="slide-org7261f00">
+<h3 id="org7261f00"><b>Theme :</b> スライドのテーマ</h3>
+<p>
+reveal.js ディレクトリの "css/theme/" から選択可能
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-org"><span style="color: #b22222;"># &#12371;&#12398;&#12473;&#12521;&#12452;&#12489;&#12399; simple</span>
+<span style="color: #b22222;">#+REVEAL_THEME: simple</span>
+</pre>
+</div>
+
+<p>
+↓で各テーマを確認できる
+</p>
+<a href="https://revealjs.com/#/themes" target="_blank" rel="noopener noreferrer">
+https://revealjs.com/#/themes
+</a>
+</section>
+<section id="slide-orgf8cd9f1">
+<h3 id="orgf8cd9f1"><b>Transition :</b> スライド遷移</h3>
+<p>
+none, fade, slide, convex, concave, zoom から選択
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-org"><span style="color: #b22222;"># &#12371;&#12398;&#12473;&#12521;&#12452;&#12489;&#12399; "slide"</span>
+<span style="color: #b22222;">#+REVEAL_TRANS: slide</span>
+</pre>
+</div>
+</section>
+<section id="slide-org36c457e">
+<h3 id="org36c457e"><b>Title Slide:</b> タイトルスライド</h3>
+<p>
+タイトルスライドがいらない場合
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-org"><span style="color: #b22222;">#+REVEAL_TITLE_SLIDE:</span>
+</pre>
+</div>
+
+<p>
+タイトルスライドのカスタマイズ例
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-org"><span style="color: #7f7f7f;">#+TITLE:</span> <span style="color: #191970; font-weight: bold;">Org-mode &#12363;&#12425; reveal.js &#12473;&#12521;&#12452;&#12489;&#12434;&#20316;&#25104;&#12377;&#12427; #org-re-reveal</span>
+<span style="color: #7f7f7f;">#+Author:</span> <span style="color: #191970;">Masahiro Kawahara</span>
+
+<span style="color: #b22222;">#+REVEAL_TITLE_SLIDE: &lt;h3&gt;%t&lt;/h3&gt;&lt;h4&gt;%a&lt;/h4&gt;</span>
+<span style="color: #b22222;"># %t &#12399;&#12479;&#12452;&#12488;&#12523;&#12289; %a &#12399; &#33879;&#32773;</span>
+</pre>
+</div>
+</section>
+<section id="slide-org10e9f29" data-background="#123456">
+<h3 id="org10e9f29"><b>Slide Background :</b> 背景色</h3>
+<p>
+<code>:PROPERTIES: ... :END:</code> 内に
+<code>:reveal_background: #RGB</code> を書く
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-org"><span style="color: #fcfcfc;">*</span><span style="color: #a0522d;">* </span><span style="color: #a0522d; font-weight: bold;">*Slide Background :*</span><span style="color: #a0522d;"> &#32972;&#26223;&#33394;</span>
+<span style="color: #a020f0;">   :PROPERTIES:</span>
+   <span style="color: #a020f0;">:reveal_background:</span> #123456
+<span style="color: #a020f0;">   :END:</span>
+</pre>
+</div>
+</section>
+<section id="slide-orgda75eae" data-background="./img/mesoko.png">
+<h3 id="orgda75eae"><b>Slide Image Background :</b> 背景画像</h3>
+<p>
+<code>:PROPERTIES: ... :END:</code> 内に
+<code>:reveal_background: $IMAGE-PATH</code> を書く
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-org"><span style="color: #fcfcfc;">*</span><span style="color: #a0522d;">* </span><span style="color: #a0522d; font-weight: bold;">*Slide Image Background :*</span><span style="color: #a0522d;"> &#32972;&#26223;&#30011;&#20687;</span>
+<span style="color: #a020f0;">   :PROPERTIES:</span>
+   <span style="color: #a020f0;">:reveal_background:</span> ./img/mesoko.png
+<span style="color: #a020f0;">   :END:</span>
+</pre>
+</div>
+</section>
+<section id="slide-org6c97006" data-background="./img/mesoko.png" data-background-size="200px" data-background-repeat="repeat">
+<h3 id="org6c97006"><b>Repeating Image Background :</b> リピート</h3>
+<div class="org-src-container">
+
+<pre  class="src src-org"><span style="color: #fcfcfc;">*</span><span style="color: #a0522d;">* </span><span style="color: #a0522d; font-weight: bold;">*Repeating Image Background :*</span><span style="color: #a0522d;"> &#12522;&#12500;&#12540;&#12488;</span>
+<span style="color: #a020f0;">   :PROPERTIES:</span>
+   <span style="color: #a020f0;">:reveal_background:</span> ./img/mesoko.png
+   <span style="color: #a020f0;">:reveal_background_size:</span> 200px
+   <span style="color: #a020f0;">:reveal_background_repeat:</span> repeat
+<span style="color: #a020f0;">   :END:</span>
+</pre>
+</div>
+</section>
+<section id="slide-org1292620">
+<h3 id="org1292620"><b>Title Slide Background Image :</b> タイトル背景</h3>
+<div class="org-src-container">
+
+<pre  class="src src-org"><span style="color: #b22222;">#+REVEAL_TITLE_SLIDE_BACKGROUND: ./img/title-classmethod.png</span>
+&#8595;&#32972;&#26223;&#30011;&#20687;&#12434;&#12522;&#12500;&#12540;&#12488;&#12377;&#12427;&#22580;&#21512;&#12399;&#19979;&#35352;&#12467;&#12513;&#12531;&#12488;&#12450;&#12454;&#12488;&#12434;&#28040;&#12377;
+<span style="color: #b22222;"># #+REVEAL_TITLE_SLIDE_BACKGROUND_SIZE: 200px</span>
+<span style="color: #b22222;"># #+REVEAL_TITLE_SLIDE_BACKGROUND_REPEAT: repeat</span>
+</pre>
+</div>
+
+<div class="figure">
+<p><img src="./img/org-reveal-02-title.png" alt="org-reveal-02-title.png" width="400px" />
+</p>
+</div>
+</section>
+<section id="slide-org7d080e4">
+<h3 id="org7d080e4"><b>List Fragment :</b> リストの遅延表示</h3>
+<div class="org-src-container">
+
+<pre  class="src src-org"><span style="color: #b22222;">#+ATTR_REVEAL: :frag (appear)</span>
+-  list item 1
+-  list item 2
+-  list item 3
+</pre>
+</div>
+<p>
+Press [↓]
+</p>
+<ul>
+<li class="fragment appear">list item 1</li>
+<li class="fragment appear">list item 2</li>
+<li class="fragment appear">list item 3</li>
+
+</ul>
+</section>
+<section id="slide-orgee1ddd0">
+<h3 id="orgee1ddd0"><b>En-/Disable num,toc</b> 見出しの項番・目次の表示/非表示</h3>
+<div class="org-src-container">
+
+<pre  class="src src-org"><span style="color: #b22222;"># num:nil ... &#35211;&#20986;&#12375;&#12398;&#38917;&#30058;&#12434;&#38750;&#34920;&#31034;&#12395;</span>
+<span style="color: #b22222;"># toc:nil ... &#30446;&#27425;&#12398;&#38750;&#34920;&#31034;&#12395;</span>
+<span style="color: #b22222;">#+OPTIONS: num:nil toc:nil</span>
+</pre>
+</div>
+</section>
+</section>
+</div>
+</div>
+<script src="https://revealjs.com/lib/js/head.min.js"></script>
+<script src="https://revealjs.com/js/reveal.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: false,
+fragmentInURL: false,
+hashOneBasedIndex: false,
+pdfSeparateFragments: true,
+
+overview: true,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'slide', // see README of reveal.js for options
+transitionSpeed: 'default',
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+ { src: 'https://revealjs.com/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'https://revealjs.com/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'https://revealjs.com/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: 'https://revealjs.com/plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: 'https://revealjs.com/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } }]
+
+});
+</script>
+</body>
+</html>
