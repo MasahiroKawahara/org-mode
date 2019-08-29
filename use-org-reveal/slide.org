@@ -10,14 +10,20 @@
 #+REVEAL_TITLE_SLIDE_BACKGROUND: ./img/title-classmethod.png
 
 #+OPTIONS: num:nil toc:nil
-#+OPTIONS: org-re-reveal-center:nil
+
+#+REVEAL_EXTRA_CSS: ./local.css
 
 * インストール
   :PROPERTIES:
   :reveal_background: #123456
   :END:
 ** 
-  ソースは [[https://gitlab.com/oer/org-re-reveal][こちら (gitlab)]]
+  #+BEGIN_EXPORT html
+  ソースは
+  <a href="https://gitlab.com/oer/org-re-reveal" target="_blank" rel="noopener noreferrer">
+  こちら (gitlab)
+  </a>
+  #+END_EXPORT
 
   インストールの方法は2つ。
   1. MELPA からインストール
@@ -221,9 +227,15 @@
    -  list item 1
    -  list item 2
    -  list item 3
-** *En-/Disable num,toc* 見出しの項番・目次の表示/非表示
+** *En-/Disable num,toc :* 見出しの項番・目次の表示/非表示
    #+BEGIN_SRC org
    # num:nil ... 見出しの項番を非表示に
    # toc:nil ... 目次の非表示に
    #+OPTIONS: num:nil toc:nil
    #+END_SRC
+** *Extra Stylesheets :* 追加 CSS
+   #+BEGIN_SRC org
+   #+REVEAL_EXTRA_CSS: ./local.css
+   #+END_SRC
+
+   カスタマイズしたいときに

@@ -11,6 +11,7 @@
 
 <link rel="stylesheet" href="https://revealjs.com/css/theme/simple.css" id="theme"/>
 
+<link rel="stylesheet" href="./local.css"/>
 
 <!-- If the query includes 'print-pdf', include the PDF print sheet -->
 <script>
@@ -31,14 +32,15 @@
 </section>
 
 <section>
-<section id="slide-org854f413" data-background="#123456">
-<h2 id="org854f413">インストール</h2>
+<section id="slide-orgb33e295" data-background="#123456">
+<h2 id="orgb33e295">インストール</h2>
 </section>
-<section id="slide-org9deb466">
-<h3 id="org9deb466"></h3>
-<p>
-ソースは <a href="https://gitlab.com/oer/org-re-reveal">こちら (gitlab)</a>
-</p>
+<section id="slide-orgac36bd1">
+<h3 id="orgac36bd1"></h3>
+ソースは
+<a href="https://gitlab.com/oer/org-re-reveal" target="_blank" rel="noopener noreferrer">
+こちら (gitlab)
+</a>
 
 <p>
 インストールの方法は2つ。
@@ -49,8 +51,8 @@
 
 </ol>
 </section>
-<section id="slide-orgd0fcde9">
-<h3 id="orgd0fcde9">MELPA からインストール</h3>
+<section id="slide-orgb6cc8c5">
+<h3 id="orgb6cc8c5">MELPA からインストール</h3>
 <ol>
 <li>(やっていない人) MELPAを使えるようにする</li>
 <li><p>
@@ -73,8 +75,8 @@ init.el に下記追加
 
 </ol>
 </section>
-<section id="slide-orgda29d30">
-<h3 id="orgda29d30">GitLab からインストール</h3>
+<section id="slide-org0e9cc2c">
+<h3 id="org0e9cc2c">GitLab からインストール</h3>
 <ol>
 <li><p>
 <code>git clone</code> 実行
@@ -98,19 +100,19 @@ init.el に下記追加
 </section>
 </section>
 <section>
-<section id="slide-org936cfb8" data-background="#123456">
-<h2 id="org936cfb8">First Try</h2>
+<section id="slide-org568741a" data-background="#123456">
+<h2 id="org568741a">First Try</h2>
 </section>
-<section id="slide-orgc886759">
-<h3 id="orgc886759">(必須) reveal.js 場所の指定</h3>
+<section id="slide-orgcf4a2e5">
+<h3 id="orgcf4a2e5">(必須) reveal.js 場所の指定</h3>
 <ol>
 <li>file で指定</li>
 <li>https で指定</li>
 
 </ol>
 </section>
-<section id="slide-orgece717d">
-<h4 id="orgece717d"><b>1. file で指定</b></h4>
+<section id="slide-orgb812795">
+<h4 id="orgb812795"><b>1. file で指定</b></h4>
 <p>
 init.el に下記追加。
 </p>
@@ -129,8 +131,8 @@ init.el に下記追加。
 </pre>
 </div>
 </section>
-<section id="slide-org45aefe2">
-<h4 id="org45aefe2"><b>2. https で指定</b></h4>
+<section id="slide-orgbb17880">
+<h4 id="orgbb17880"><b>2. https で指定</b></h4>
 <div class="org-src-container">
 
 <pre  class="src src-org"><span style="color: #b22222;">#+REVEAL_ROOT: <a href="https://revealjs.com/">https://revealjs.com/</a></span>
@@ -140,8 +142,8 @@ init.el に下記追加。
 ※ reveal.js document 曰く "not recommend this"
 </p>
 </section>
-<section id="slide-orgd721eaa">
-<h3 id="orgd721eaa">Export</h3>
+<section id="slide-orgba768ec">
+<h3 id="orgba768ec">Export</h3>
 
 <div class="figure">
 <p><img src="./img/org-reveal-01.png" alt="org-reveal-01.png" />
@@ -156,11 +158,11 @@ init.el に下記追加。
 </section>
 </section>
 <section>
-<section id="slide-org5d66ea2" data-background="#123456">
-<h2 id="org5d66ea2">主な設定項目</h2>
+<section id="slide-org6446473" data-background="#123456">
+<h2 id="org6446473">主な設定項目</h2>
 </section>
-<section id="slide-orga0c31d2">
-<h3 id="orga0c31d2"><b>HLevel :</b> スライドレイアウト</h3>
+<section id="slide-orge49e18a">
+<h3 id="orge49e18a"><b>HLevel :</b> スライドレイアウト</h3>
 <div class="org-src-container">
 
 <pre  class="src src-org"><span style="color: #b22222;">#+REVEAL_HLEVEL: 1</span>
@@ -183,8 +185,8 @@ init.el に下記追加。
 </p>
 </div>
 </section>
-<section id="slide-orge6e15a9">
-<h3 id="orge6e15a9"><b>Force Split :</b> スライド分割</h3>
+<section id="slide-org3a7676b">
+<h3 id="org3a7676b"><b>Force Split :</b> スライド分割</h3>
 <div class="org-src-container">
 
 <pre  class="src src-org">My favorite scenes are (in this order)
@@ -256,8 +258,8 @@ very well from his role as Mikey Walsh in <i>The Goonies</i>.</dd>
 </p>
 
 </section>
-<section id="slide-org7261f00">
-<h3 id="org7261f00"><b>Theme :</b> スライドのテーマ</h3>
+<section id="slide-orgee6c2cc">
+<h3 id="orgee6c2cc"><b>Theme :</b> スライドのテーマ</h3>
 <p>
 reveal.js ディレクトリの "css/theme/" から選択可能
 </p>
@@ -275,8 +277,8 @@ reveal.js ディレクトリの "css/theme/" から選択可能
 https://revealjs.com/#/themes
 </a>
 </section>
-<section id="slide-orgf8cd9f1">
-<h3 id="orgf8cd9f1"><b>Transition :</b> スライド遷移</h3>
+<section id="slide-org2fa35f3">
+<h3 id="org2fa35f3"><b>Transition :</b> スライド遷移</h3>
 <p>
 none, fade, slide, convex, concave, zoom から選択
 </p>
@@ -287,8 +289,8 @@ none, fade, slide, convex, concave, zoom から選択
 </pre>
 </div>
 </section>
-<section id="slide-org36c457e">
-<h3 id="org36c457e"><b>Title Slide:</b> タイトルスライド</h3>
+<section id="slide-org19a284c">
+<h3 id="org19a284c"><b>Title Slide:</b> タイトルスライド</h3>
 <p>
 タイトルスライドがいらない場合
 </p>
@@ -311,8 +313,8 @@ none, fade, slide, convex, concave, zoom から選択
 </pre>
 </div>
 </section>
-<section id="slide-org10e9f29" data-background="#123456">
-<h3 id="org10e9f29"><b>Slide Background :</b> 背景色</h3>
+<section id="slide-orgc24b7e9" data-background="#123456">
+<h3 id="orgc24b7e9"><b>Slide Background :</b> 背景色</h3>
 <p>
 <code>:PROPERTIES: ... :END:</code> 内に
 <code>:reveal_background: #RGB</code> を書く
@@ -326,8 +328,8 @@ none, fade, slide, convex, concave, zoom から選択
 </pre>
 </div>
 </section>
-<section id="slide-orgda75eae" data-background="./img/mesoko.png">
-<h3 id="orgda75eae"><b>Slide Image Background :</b> 背景画像</h3>
+<section id="slide-orgd36b5da" data-background="./img/mesoko.png">
+<h3 id="orgd36b5da"><b>Slide Image Background :</b> 背景画像</h3>
 <p>
 <code>:PROPERTIES: ... :END:</code> 内に
 <code>:reveal_background: $IMAGE-PATH</code> を書く
@@ -341,8 +343,8 @@ none, fade, slide, convex, concave, zoom から選択
 </pre>
 </div>
 </section>
-<section id="slide-org6c97006" data-background="./img/mesoko.png" data-background-size="200px" data-background-repeat="repeat">
-<h3 id="org6c97006"><b>Repeating Image Background :</b> リピート</h3>
+<section id="slide-org4132468" data-background="./img/mesoko.png" data-background-size="200px" data-background-repeat="repeat">
+<h3 id="org4132468"><b>Repeating Image Background :</b> リピート</h3>
 <div class="org-src-container">
 
 <pre  class="src src-org"><span style="color: #fcfcfc;">*</span><span style="color: #a0522d;">* </span><span style="color: #a0522d; font-weight: bold;">*Repeating Image Background :*</span><span style="color: #a0522d;"> &#12522;&#12500;&#12540;&#12488;</span>
@@ -354,8 +356,8 @@ none, fade, slide, convex, concave, zoom から選択
 </pre>
 </div>
 </section>
-<section id="slide-org1292620">
-<h3 id="org1292620"><b>Title Slide Background Image :</b> タイトル背景</h3>
+<section id="slide-org2cac632">
+<h3 id="org2cac632"><b>Title Slide Background Image :</b> タイトル背景</h3>
 <div class="org-src-container">
 
 <pre  class="src src-org"><span style="color: #b22222;">#+REVEAL_TITLE_SLIDE_BACKGROUND: ./img/title-classmethod.png</span>
@@ -370,8 +372,8 @@ none, fade, slide, convex, concave, zoom から選択
 </p>
 </div>
 </section>
-<section id="slide-org7d080e4">
-<h3 id="org7d080e4"><b>List Fragment :</b> リストの遅延表示</h3>
+<section id="slide-org105c2b1">
+<h3 id="org105c2b1"><b>List Fragment :</b> リストの遅延表示</h3>
 <div class="org-src-container">
 
 <pre  class="src src-org"><span style="color: #b22222;">#+ATTR_REVEAL: :frag (appear)</span>
@@ -390,8 +392,8 @@ Press [↓]
 
 </ul>
 </section>
-<section id="slide-orgee1ddd0">
-<h3 id="orgee1ddd0"><b>En-/Disable num,toc</b> 見出しの項番・目次の表示/非表示</h3>
+<section id="slide-orga7b2246">
+<h3 id="orga7b2246"><b>En-/Disable num,toc :</b> 見出しの項番・目次の表示/非表示</h3>
 <div class="org-src-container">
 
 <pre  class="src src-org"><span style="color: #b22222;"># num:nil ... &#35211;&#20986;&#12375;&#12398;&#38917;&#30058;&#12434;&#38750;&#34920;&#31034;&#12395;</span>
@@ -399,6 +401,18 @@ Press [↓]
 <span style="color: #b22222;">#+OPTIONS: num:nil toc:nil</span>
 </pre>
 </div>
+</section>
+<section id="slide-orge76c38a">
+<h3 id="orge76c38a"><b>Extra Stylesheets :</b> 追加 CSS</h3>
+<div class="org-src-container">
+
+<pre  class="src src-org"><span style="color: #b22222;">#+REVEAL_EXTRA_CSS: ./local.css</span>
+</pre>
+</div>
+
+<p>
+カスタマイズしたいときに
+</p>
 </section>
 </section>
 </div>
